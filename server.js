@@ -9,7 +9,7 @@ const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SER
 app.use(cors());
 app.use('/api/webhook', express.raw({ type: 'application/json' }));
 app.use(express.json());
-app.use(express.static('public'));
+app.use(express.static(__dirname + '/public'));
 
 app.post('/api/create-checkout', async (req, res) => {
   const { priceId, email } = req.body;
