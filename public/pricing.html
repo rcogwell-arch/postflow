@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>PostFlow — Choose Your Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0a0f;--surface:#13131a;--border:#1e1e2e;--text:#f0f0f8;--muted:#6b6b8a;--accent:#7c6af5;--agency:#f5a623}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 30% 20%,rgba(124,106,245,0.08) 0%,transparent 50%),radial-gradient(ellipse at 70% 80%,rgba(245,166,35,0.06) 0%,transparent 50%);pointer-events:none;z-index:0}
+nav{position:relative;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:24px 48px;border-bottom:1px solid var(--border)}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:22px;letter-spacing:-0.5px}
+.logo span{color:var(--accent)}
+nav a{color:var(--muted);text-decoration:none;font-size:14px}
+.hero{position:relative;z-index:1;text-align:center;padding:80px 24px 60px}
+.badge{display:inline-block;background:rgba(124,106,245,0.12);border:1px solid rgba(124,106,245,0.3);color:var(--accent);padding:6px 16px;border-radius:100px;font-size:12px;letter-spacing:1px;text-transform:uppercase;margin-bottom:24px}
+h1{font-family:'Syne',sans-serif;font-size:clamp(36px,6vw,64px);font-weight:800;line-height:1.1;letter-spacing:-2px;margin-bottom:16px}
+h1 em{font-style:normal;color:var(--accent)}
+.subtitle{color:var(--muted);font-size:18px;max-width:480px;margin:0 auto}
+.plans{position:relative;z-index:1;display:flex;gap:20px;max-width:960px;margin:0 auto;padding:0 24px 80px;align-items:stretch;flex-wrap:wrap;justify-content:center}
+.plan{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:40px 32px;flex:1;min-width:260px;max-width:300px;position:relative;transition:transform 0.3s,border-color 0.3s;display:flex;flex-direction:column}
+.plan:hover{transform:translateY(-4px)}
+.plan.featured{border-color:rgba(124,106,245,0.5);background:linear-gradient(160deg,rgba(124,106,245,0.08),var(--surface))}
+.plan.agency-plan{border-color:rgba(245,166,35,0.3)}
+.popular-tag{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:4px 16px;border-radius:100px}
+.plan-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+.plan-price{display:flex;align-items:baseline;gap:4px;margin-bottom:8px}
+.price-num{font-family:'Syne',sans-serif;font-size:52px;font-weight:800;letter-spacing:-2px;line-height:1}
+.price-mo{color:var(--muted);font-size:14px}
+.plan-desc{color:var(--muted);font-size:14px;margin-bottom:32px;line-height:1.5}
+.features{list-style:none;margin-bottom:36px;flex:1}
+.features li{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);font-size:14px}
+.features li:last-child{border-bottom:none}
+.check{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(124,106,245,0.15);color:var(--accent);font-size:10px;flex-shrink:0}
+.agency-plan .check{background:rgba(245,166,35,0.15);color:var(--agency)}
+.btn{width:100%;padding:14px;border-radius:12px;border:none;cursor:pointer;font-family:'Syne',sans-serif;font-weight:700;font-size:14px;letter-spacing:0.5px;transition:all 0.25s;text-align:center;text-decoration:none;display:block}
+.btn-free{background:var(--border);color:var(--muted)}
+.btn-free:hover{background:#2a2a3e;color:var(--text)}
+.btn-pro{background:var(--accent);color:#fff}
+.btn-pro:hover{background:#6a58e3}
+.btn-agency{background:var(--agency);color:#0a0a0f}
+.btn-agency:hover{background:#e0961f}
+.loading{display:none;font-size:13px;color:var(--muted);text-align:center;margin-top:8px}
+.guarantee{text-align:center;color:var(--muted);font-size:13px;padding-bottom:48px;position:relative;z-index:1}
+.guarantee strong{color:var(--text)}
+</style>
+</head>
+<body>
+<nav>
+  <div class="logo">Post<span>Flow</span></div>
+  <a href="/login.html">Sign In</a>
+</nav>
+<div class="hero">
+  <div class="badge">Simple Pricing</div>
+  <h1>Grow your brand<br/>with <em>PostFlow</em></h1>
+  <p class="subtitle">Schedule smarter. Post faster. Let AI do the heavy lifting.</p>
+</div>
+<div class="plans">
+  <div class="plan">
+    <div class="plan-name">Free</div>
+    <div class="plan-price"><span class="price-num">$0</span><span class="price-mo">/mo</span></div>
+    <p class="plan-desc">Get started at no cost</p>
+    <ul class="features">
+      <li><span class="check">✓</span> 3 scheduled posts/month</li>
+      <li><span class="check">✓</span> 1 social platform</li>
+      <li><span class="check">✓</span> Basic AI content generation</li>
+    </ul>
+    <a href="/signup.html?plan=free" class="btn btn-free">Get Started Free</a>
+  </div>
+  <div class="plan featured">
+    <div class="popular-tag">Most Popular</div>
+    <div class="plan-name">Pro</div>
+    <div class="plan-price"><span class="price-num">$19</span><span class="price-mo">/mo</span></div>
+    <p class="plan-desc">For creators & small businesses</p>
+    <ul class="features">
+      <li><span class="check">✓</span> Unlimited scheduled posts</li>
+      <li><span class="check">✓</span> 5 social platforms</li>
+      <li><span class="check">✓</span> Full AI content generation</li>
+      <li><span class="check">✓</span> Post analytics</li>
+    </ul>
+    <button class="btn btn-pro" onclick="checkout('pro')">Start Pro — $19/mo</button>
+    <div class="loading" id="loading-pro">Redirecting to checkout…</div>
+  </div>
+  <div class="plan agency-plan">
+    <div class="plan-name">Agency</div>
+    <div class="plan-price"><span class="price-num">$49</span><span class="price-mo">/mo</span></div>
+    <p class="plan-desc">For agencies managing clients</p>
+    <ul class="features">
+      <li><span class="check">✓</span> Everything in Pro</li>
+      <li><span class="check">✓</span> Up to 10 client accounts</li>
+      <li><span class="check">✓</span> Priority support</li>
+      <li><span class="check">✓</span> Bulk scheduling</li>
+    </ul>
+    <button class="btn btn-agency" onclick="checkout('agency')">Start Agency — $49/mo</button>
+    <div class="loading" id="loading-agency">Redirecting to checkout…</div>
+  </div>
+</div>
+<p class="guarantee">🔒 <strong>30-day money-back guarantee.</strong> Cancel anytime. No questions asked.</p>
+<script>
+async function checkout(plan) {
+  const btn = document.querySelector(plan==='pro'?'.btn-pro':'.btn-agency');
+  const loading = document.getElementById('loading-'+plan);
+  if(btn) btn.disabled=true;
+  if(loading) loading.style.display='block';
+  try {
+    const res = await fetch('/create-checkout-session',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({plan})});
+    const data = await res.json();
+    if(data.url){window.location.href=data.url;}
+    else{alert('Something went wrong.');if(btn)btn.disabled=false;if(loading)loading.style.display='none';}
+  } catch(e){alert('Connection error.');if(btn)btn.disabled=false;if(loading)loading.style.display='none';}
+}
+</script>
+</body>
+</html>
