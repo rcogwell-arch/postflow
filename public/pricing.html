@@ -72,7 +72,7 @@ h1 em{font-style:normal;color:var(--accent)}
   <div class="plan featured">
     <div class="popular-tag">Most Popular</div>
     <div class="plan-name">Pro</div>
-    <div class="plan-price"><span class="price-num">$19</span><span class="price-mo">/mo</span></div>
+    <div class="plan-price"><span class="price-num">$29</span><span class="price-mo">/mo</span></div>
     <p class="plan-desc">For creators & small businesses</p>
     <ul class="features">
       <li><span class="check">✓</span> Unlimited scheduled posts</li>
@@ -80,12 +80,12 @@ h1 em{font-style:normal;color:var(--accent)}
       <li><span class="check">✓</span> Full AI content generation</li>
       <li><span class="check">✓</span> Post analytics</li>
     </ul>
-    <button class="btn btn-pro" onclick="checkout('pro')">Start Pro — $19/mo</button>
+    <button class="btn btn-pro" onclick="checkout('pro')">Start Pro — $29/mo</button>
     <div class="loading" id="loading-pro">Redirecting to checkout…</div>
   </div>
   <div class="plan agency-plan">
     <div class="plan-name">Agency</div>
-    <div class="plan-price"><span class="price-num">$49</span><span class="price-mo">/mo</span></div>
+    <div class="plan-price"><span class="price-num">$79</span><span class="price-mo">/mo</span></div>
     <p class="plan-desc">For agencies managing clients</p>
     <ul class="features">
       <li><span class="check">✓</span> Everything in Pro</li>
@@ -93,20 +93,20 @@ h1 em{font-style:normal;color:var(--accent)}
       <li><span class="check">✓</span> Priority support</li>
       <li><span class="check">✓</span> Bulk scheduling</li>
     </ul>
-    <button class="btn btn-agency" onclick="checkout('agency')">Start Agency — $49/mo</button>
+    <button class="btn btn-agency" onclick="checkout('agency')">Start Agency — $79/mo</button>
     <div class="loading" id="loading-agency">Redirecting to checkout…</div>
   </div>
 </div>
 <p class="guarantee">🔒 <strong>30-day money-back guarantee.</strong> Cancel anytime. No questions asked.</p>
 <script>
 async function checkout(plan) {
-  const btn = document.querySelector(plan==='pro'?'.btn-pro':'.btn-agency');
-  const loading = document.getElementById('loading-'+plan);
-  if(btn) btn.disabled=true;
-  if(loading) loading.style.display='block';
+  const btn=document.querySelector(plan==='pro'?'.btn-pro':'.btn-agency');
+  const loading=document.getElementById('loading-'+plan);
+  if(btn)btn.disabled=true;
+  if(loading)loading.style.display='block';
   try {
-    const res = await fetch('/create-checkout-session',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({plan})});
-    const data = await res.json();
+    const res=await fetch('/create-checkout-session',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({plan})});
+    const data=await res.json();
     if(data.url){window.location.href=data.url;}
     else{alert('Something went wrong.');if(btn)btn.disabled=false;if(loading)loading.style.display='none';}
   } catch(e){alert('Connection error.');if(btn)btn.disabled=false;if(loading)loading.style.display='none';}
