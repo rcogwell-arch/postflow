@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>PostFlow Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#f5f0ff;--card:#ffffff;--purple:#7c3aed;--pink:#f43f8e;--orange:#ff6b35;--green:#00c896;--blue:#3b82f6;--yellow:#fbbf24;--text:#1a0533;--muted:#7c6b8a;--border:#e8e0f5}
+body{background:var(--bg);font-family:'Instrument Sans',sans-serif;color:var(--text);min-height:100vh}
+body::before{content:'';position:fixed;top:-200px;right:-200px;width:600px;height:600px;background:radial-gradient(circle,rgba(124,58,237,0.12),transparent 70%);border-radius:50%;pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;bottom:-200px;left:-200px;width:500px;height:500px;background:radial-gradient(circle,rgba(244,63,142,0.1),transparent 70%);border-radius:50%;pointer-events:none;z-index:0}
+.sidebar{position:fixed;left:0;top:0;width:240px;height:100vh;background:var(--text);z-index:100;display:flex;flex-direction:column;padding:24px 16px}
+.logo{font-family:'Cabinet Grotesk',sans-serif;font-weight:900;font-size:24px;color:#fff;padding:8px 12px;margin-bottom:32px;letter-spacing:-0.5px}
+.logo span{color:var(--pink)}
+.nav-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:12px;color:rgba(255,255,255,0.6);font-size:14px;font-weight:500;cursor:pointer;transition:all 0.2s;margin-bottom:4px;text-decoration:none}
+.nav-item:hover{background:rgba(255,255,255,0.08);color:#fff}
+.nav-item.active{background:var(--purple);color:#fff}
+.sidebar-bottom{margin-top:auto}
+.user-card{background:rgba(255,255,255,0.06);border-radius:12px;padding:12px;display:flex;align-items:center;gap:10px}
+.avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--pink));display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:14px;flex-shrink:0}
+.user-info .name{color:#fff;font-size:13px;font-weight:600}
+.user-info .plan{color:rgba(255,255,255,0.4);font-size:11px}
+.main{margin-left:240px;padding:32px;position:relative;z-index:1}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px}
+.greeting{font-family:'Cabinet Grotesk',sans-serif;font-size:28px;font-weight:800;letter-spacing:-0.5px}
+.greeting span{color:var(--purple)}
+.btn-new{background:var(--purple);color:#fff;border:none;padding:12px 20px;border-radius:12px;font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:14px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all 0.2s}
+.btn-new:hover{background:#6d28d9;transform:translateY(-1px);box-shadow:0 8px 20px rgba(124,58,237,0.3)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
+.stat-card{background:var(--card);border-radius:20px;padding:24px;position:relative;overflow:hidden;border:1px solid var(--border);transition:transform 0.2s}
+.stat-card:hover{transform:translateY(-2px)}
+.stat-card::before{content:'';position:absolute;top:-30px;right:-30px;width:100px;height:100px;border-radius:50%;opacity:0.15}
+.stat-card:nth-child(1)::before{background:var(--purple)}
+.stat-card:nth-child(2)::before{background:var(--pink)}
+.stat-card:nth-child(3)::before{background:var(--green)}
+.stat-card:nth-child(4)::before{background:var(--orange)}
+.stat-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:16px}
+.stat-card:nth-child(1) .stat-icon{background:rgba(124,58,237,0.12)}
+.stat-card:nth-child(2) .stat-icon{background:rgba(244,63,142,0.12)}
+.stat-card:nth-child(3) .stat-icon{background:rgba(0,200,150,0.12)}
+.stat-card:nth-child(4) .stat-icon{background:rgba(255,107,53,0.12)}
+.stat-value{font-family:'Cabinet Grotesk',sans-serif;font-size:32px;font-weight:900;letter-spacing:-1px;margin-bottom:4px}
+.stat-label{color:var(--muted);font-size:12px;font-weight:500}
+.stat-change{font-size:11px;font-weight:600;margin-top:8px;display:inline-block;padding:3px 8px;border-radius:100px}
+.up{background:rgba(0,200,150,0.12);color:var(--green)}
+.neutral{background:rgba(124,58,237,0.1);color:var(--purple)}
+.grid{display:grid;grid-template-columns:1fr 360px;gap:24px}
+.card{background:var(--card);border-radius:20px;padding:24px;border:1px solid var(--border)}
+.card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.card-title{font-family:'Cabinet Grotesk',sans-serif;font-size:18px;font-weight:800}
+.view-all{color:var(--purple);font-size:13px;font-weight:600;cursor:pointer;text-decoration:none}
+.post-item{display:flex;align-items:flex-start;gap:14px;padding:16px 0;border-bottom:1px solid var(--border)}
+.post-item:last-child{border-bottom:none;padding-bottom:0}
+.platform-badge{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.post-content{flex:1}
+.post-text{font-size:13px;line-height:1.5;color:var(--text);margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.post-meta{display:flex;align-items:center;gap:8px}
+.post-time{font-size:11px;color:var(--muted)}
+.post-status{font-size:10px;font-weight:700;padding:3px 8px;border-radius:100px;letter-spacing:0.5px}
+.status-scheduled{background:rgba(124,58,237,0.1);color:var(--purple)}
+.status-posted{background:rgba(0,200,150,0.12);color:var(--green)}
+.status-draft{background:rgba(251,191,36,0.15);color:#d97706}
+.post-actions{display:flex;gap:6px}
+.post-btn{width:28px;height:28px;border-radius:8px;border:1px solid var(--border);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;transition:all 0.15s}
+.post-btn:hover{background:var(--bg)}
+.right-col{display:flex;flex-direction:column;gap:24px}
+.create-card{background:linear-gradient(135deg,var(--purple),#a855f7);border-radius:20px;padding:24px;color:#fff}
+.create-title{font-family:'Cabinet Grotesk',sans-serif;font-size:18px;font-weight:800;margin-bottom:8px}
+.create-sub{font-size:13px;opacity:0.8;margin-bottom:20px;line-height:1.5}
+.create-textarea{width:100%;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.2);border-radius:12px;padding:14px;color:#fff;font-family:'Instrument Sans',sans-serif;font-size:13px;resize:none;height:90px;outline:none;margin-bottom:14px}
+.create-textarea::placeholder{color:rgba(255,255,255,0.5)}
+.create-platforms{display:flex;gap:8px;margin-bottom:14px}
+.platform-toggle{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,0.15);border:2px solid transparent;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;transition:all 0.2s}
+.platform-toggle.on{background:rgba(255,255,255,0.25);border-color:rgba(255,255,255,0.5)}
+.create-actions{display:flex;gap:8px}
+.btn-ai{flex:1;background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.3);color:#fff;padding:10px;border-radius:10px;font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all 0.2s}
+.btn-ai:hover{background:rgba(255,255,255,0.3)}
+.btn-schedule{flex:1;background:#fff;color:var(--purple);border:none;padding:10px;border-radius:10px;font-family:'Cabinet Grotesk',sans-serif;font-weight:800;font-size:13px;cursor:pointer;transition:all 0.2s}
+.btn-schedule:hover{background:rgba(255,255,255,0.9);transform:scale(1.02)}
+.analytics-card .bar-row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.bar-label{font-size:12px;color:var(--muted);width:70px;flex-shrink:0}
+.bar-track{flex:1;height:8px;background:var(--bg);border-radius:100px;overflow:hidden}
+.bar-fill{height:100%;border-radius:100px}
+.bar-value{font-size:12px;font-weight:700;color:var(--text);width:36px;text-align:right;flex-shrink:0}
+.platform-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
+.platform-row:last-child{border-bottom:none;padding-bottom:0}
+.platform-left{display:flex;align-items:center;gap:10px}
+.platform-name{font-size:13px;font-weight:600}
+.platform-count{font-size:11px;color:var(--muted)}
+.connect-btn{font-size:11px;font-weight:700;padding:5px 12px;border-radius:8px;border:none;cursor:pointer}
+.connected{background:rgba(0,200,150,0.12);color:var(--green)}
+.not-connected{background:var(--bg);color:var(--purple);border:1px solid var(--border)!important}
+.modal-overlay{position:fixed;inset:0;background:rgba(26,5,51,0.5);z-index:200;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.modal-overlay.show{display:flex}
+.modal{background:#fff;border-radius:24px;padding:32px;width:480px;max-width:90vw}
+.modal-title{font-family:'Cabinet Grotesk',sans-serif;font-size:22px;font-weight:800;margin-bottom:6px}
+.modal-sub{color:var(--muted);font-size:13px;margin-bottom:20px}
+.modal-input{width:100%;border:2px solid var(--border);border-radius:12px;padding:14px;font-family:'Instrument Sans',sans-serif;font-size:14px;outline:none;transition:border-color 0.2s;margin-bottom:16px}
+.modal-input:focus{border-color:var(--purple)}
+.modal-btns{display:flex;gap:10px}
+.btn-cancel{flex:1;background:var(--bg);border:none;padding:12px;border-radius:12px;font-family:'Cabinet Grotesk',sans-serif;font-weight:700;cursor:pointer;color:var(--muted)}
+.btn-generate{flex:2;background:var(--purple);border:none;padding:12px;border-radius:12px;font-family:'Cabinet Grotesk',sans-serif;font-weight:700;color:#fff;cursor:pointer;font-size:14px}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.stat-card{animation:fadeIn 0.5s ease both}
+.stat-card:nth-child(1){animation-delay:0.1s}
+.stat-card:nth-child(2){animation-delay:0.15s}
+.stat-card:nth-child(3){animation-delay:0.2s}
+.stat-card:nth-child(4){animation-delay:0.25s}
+</style>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="logo">Post<span>Flow</span></div>
+  <a class="nav-item active" href="#">🏠 Dashboard</a>
+  <a class="nav-item" href="#">📅 Schedule</a>
+  <a class="nav-item" href="#">✨ AI Writer</a>
+  <a class="nav-item" href="#">📊 Analytics</a>
+  <a class="nav-item" href="#">🔗 Platforms</a>
+  <a class="nav-item" href="#">⚙️ Settings</a>
+  <div class="sidebar-bottom">
+    <div class="user-card">
+      <div class="avatar">RC</div>
+      <div class="user-info">
+        <div class="name">Richard C.</div>
+        <div class="plan">Pro Plan ✨</div>
+      </div>
+    </div>
+  </div>
+</aside>
+<main class="main">
+  <div class="header">
+    <div>
+      <div class="greeting">Good morning, <span>Richard!</span> 👋</div>
+      <div style="color:var(--muted);font-size:14px;margin-top:4px">Here's what's happening with your posts today</div>
+    </div>
+    <button class="btn-new" onclick="document.getElementById('modal').classList.add('show')">✨ Create Post</button>
+  </div>
+  <div class="stats">
+    <div class="stat-card"><div class="stat-icon">📅</div><div class="stat-value" style="color:var(--purple)">12</div><div class="stat-label">Scheduled Posts</div><span class="stat-change neutral">This week</span></div>
+    <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-value" style="color:var(--pink)">48</div><div class="stat-label">Posts Published</div><span class="stat-change up">↑ 12% this month</span></div>
+    <div class="stat-card"><div class="stat-icon">👁️</div><div class="stat-value" style="color:var(--green)">2.4k</div><div class="stat-label">Total Reach</div><span class="stat-change up">↑ 24% this month</span></div>
+    <div class="stat-card"><div class="stat-icon">❤️</div><div class="stat-value" style="color:var(--orange)">386</div><div class="stat-label">Engagements</div><span class="stat-change up">↑ 8% this month</span></div>
+  </div>
+  <div class="grid">
+    <div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">📋 Upcoming Posts</div><a class="view-all" href="#">View all →</a></div>
+        <div class="post-item"><div class="platform-badge" style="background:rgba(29,161,242,0.12)">🐦</div><div class="post-content"><div class="post-text">Just launched our new AI feature that writes social media posts in seconds! Try it free at trypostflow.com 🚀 #socialmedia #AI</div><div class="post-meta"><span class="post-time">📅 Today, 2:00 PM</span><span class="post-status status-scheduled">SCHEDULED</span></div></div><div class="post-actions"><button class="post-btn">✏️</button><button class="post-btn">🗑️</button></div></div>
+        <div class="post-item"><div class="platform-badge" style="background:rgba(225,48,108,0.12)">📸</div><div class="post-content"><div class="post-text">5 ways AI is changing social media marketing in 2025. Thread below 👇 Save this for later!</div><div class="post-meta"><span class="post-time">📅 Today, 5:30 PM</span><span class="post-status status-scheduled">SCHEDULED</span></div></div><div class="post-actions"><button class="post-btn">✏️</button><button class="post-btn">🗑️</button></div></div>
+        <div class="post-item"><div class="platform-badge" style="background:rgba(24,119,242,0.12)">👤</div><div class="post-content"><div class="post-text">Excited to announce PostFlow is now live! Schedule your social media posts with AI assistance. Link in bio!</div><div class="post-meta"><span class="post-time">📅 Tomorrow, 9:00 AM</span><span class="post-status status-draft">DRAFT</span></div></div><div class="post-actions"><button class="post-btn">✏️</button><button class="post-btn">🗑️</button></div></div>
+        <div class="post-item"><div class="platform-badge" style="background:rgba(0,119,181,0.12)">💼</div><div class="post-content"><div class="post-text">How we grew our social media reach by 240% using AI scheduling. Here's exactly what we did...</div><div class="post-meta"><span class="post-time">✅ Yesterday, 10:00 AM</span><span class="post-status status-posted">POSTED</span></div></div><div class="post-actions"><button class="post-btn">📊</button></div></div>
+      </div>
+      <div class="card analytics-card" style="margin-top:24px">
+        <div class="card-header"><div class="card-title">📊 Performance This Week</div></div>
+        <div class="bar-row"><div class="bar-label">Twitter</div><div class="bar-track"><div class="bar-fill" style="width:78%;background:linear-gradient(90deg,#1da1f2,#7dd3fc)"></div></div><div class="bar-value">78%</div></div>
+        <div class="bar-row"><div class="bar-label">Instagram</div><div class="bar-track"><div class="bar-fill" style="width:65%;background:linear-gradient(90deg,#e1306c,#f77737)"></div></div><div class="bar-value">65%</div></div>
+        <div class="bar-row"><div class="bar-label">Facebook</div><div class="bar-track"><div class="bar-fill" style="width:42%;background:linear-gradient(90deg,#1877f2,#42a5f5)"></div></div><div class="bar-value">42%</div></div>
+        <div class="bar-row"><div class="bar-label">LinkedIn</div><div class="bar-track"><div class="bar-fill" style="width:55%;background:linear-gradient(90deg,#0077b5,#00a0dc)"></div></div><div class="bar-value">55%</div></div>
+        <div class="bar-row" style="margin-bottom:0"><div class="bar-label">TikTok</div><div class="bar-track"><div class="bar-fill" style="width:88%;background:linear-gradient(90deg,#010101,#69c9d0)"></div></div><div class="bar-value">88%</div></div>
+      </div>
+    </div>
+    <div class="right-col">
+      <div class="create-card">
+        <div class="create-title">✨ Quick Post</div>
+        <div class="create-sub">Write something or let AI do it for you!</div>
+        <textarea class="create-textarea" placeholder="What do you want to share today?"></textarea>
+        <div class="create-platforms">
+          <div class="platform-toggle on">🐦</div>
+          <div class="platform-toggle on">📸</div>
+          <div class="platform-toggle">👤</div>
+          <div class="platform-toggle on">💼</div>
+          <div class="platform-toggle">🎵</div>
+        </div>
+        <div class="create-actions">
+          <button class="btn-ai" onclick="document.getElementById('modal').classList.add('show')">🤖 AI Write</button>
+          <button class="btn-schedule">📅 Schedule</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">🔗 Platforms</div></div>
+        <div class="platform-row"><div class="platform-left"><span style="font-size:20px">🐦</span><div><div class="platform-name">Twitter / X</div><div class="platform-count">24 posts this month</div></div></div><button class="connect-btn connected">Connected ✓</button></div>
+        <div class="platform-row"><div class="platform-left"><span style="font-size:20px">📸</span><div><div class="platform-name">Instagram</div><div class="platform-count">18 posts this month</div></div></div><button class="connect-btn connected">Connected ✓</button></div>
+        <div class="platform-row"><div class="platform-left"><span style="font-size:20px">👤</span><div><div class="platform-name">Facebook</div><div class="platform-count">Not connected</div></div></div><button class="connect-btn not-connected">+ Connect</button></div>
+        <div class="platform-row"><div class="platform-left"><span style="font-size:20px">💼</span><div><div class="platform-name">LinkedIn</div><div class="platform-count">6 posts this month</div></div></div><button class="connect-btn connected">Connected ✓</button></div>
+        <div class="platform-row"><div class="platform-left"><span style="font-size:20px">🎵</span><div><div class="platform-name">TikTok</div><div class="platform-count">Not connected</div></div></div><button class="connect-btn not-connected">+ Connect</button></div>
+      </div>
+      <div style="background:linear-gradient(135deg,#ff6b35,#fbbf24);border-radius:20px;padding:20px;color:#fff">
+        <div style="font-family:'Cabinet Grotesk',sans-serif;font-size:16px;font-weight:800;margin-bottom:6px">🚀 Upgrade to Agency</div>
+        <div style="font-size:12px;opacity:0.9;margin-bottom:14px;line-height:1.5">Manage up to 10 client accounts and unlock bulk scheduling!</div>
+        <button onclick="window.location.href='/pricing.html'" style="background:#fff;color:#ff6b35;border:none;padding:10px 18px;border-radius:10px;font-family:'Cabinet Grotesk',sans-serif;font-weight:800;font-size:13px;cursor:pointer;width:100%">View Agency Plan →</button>
+      </div>
+    </div>
+  </div>
+</main>
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-title">🤖 AI Post Writer</div>
+    <div class="modal-sub">Tell me what you want to post about and I'll write it for you!</div>
+    <input class="modal-input" type="text" placeholder="e.g. Announce our new feature launch, sound excited..."/>
+    <textarea class="modal-input" style="height:80px;resize:none" placeholder="Any extra details? Tone, hashtags, links..."></textarea>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="document.getElementById('modal').classList.remove('show')">Cancel</button>
+      <button class="btn-generate">✨ Generate Post</button>
+    </div>
+  </div>
+</div>
+<script>
+document.querySelectorAll('.platform-toggle').forEach(btn=>{btn.addEventListener('click',()=>btn.classList.toggle('on'))});
+document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)this.classList.remove('show')});
+</script>
+</body>
+</html>
