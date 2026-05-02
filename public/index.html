@@ -1,74 +1,190 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PostFlow - AI Social Media Scheduler</title>
-  <script src="https://js.stripe.com/v3/"></script>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: system-ui, sans-serif; background: #f9f9f9; color: #111; }
-    .nav { display: flex; align-items: center; justify-content: space-between; padding: 16px 32px; background: #fff; border-bottom: 1px solid #eee; }
-    .logo { font-size: 18px; font-weight: 600; } .logo span { color: #1D9E75; }
-    .container { max-width: 560px; margin: 48px auto; padding: 0 24px; }
-    h1 { font-size: 24px; font-weight: 600; margin-bottom: 8px; }
-    p { color: #666; font-size: 15px; margin-bottom: 24px; }
-    .plans { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 24px; }
-    .plan { border: 1px solid #ddd; border-radius: 12px; padding: 16px; cursor: pointer; transition: border 0.15s; }
-    .plan:hover, .plan.active { border: 2px solid #1D9E75; }
-    .plan-name { font-weight: 600; margin-bottom: 4px; }
-    .plan-price { font-size: 22px; font-weight: 700; }
-    .plan-price span { font-size: 13px; font-weight: 400; color: #888; }
-    .btn { background: #1D9E75; color: #fff; border: none; padding: 12px; border-radius: 8px; font-size: 15px; font-weight: 500; cursor: pointer; width: 100%; }
-    .btn:hover { background: #0F6E56; }
-    input { width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; margin-bottom: 12px; }
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>PostFlow — Join the Waitlist</title>
+<link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--purple:#7c3aed;--pink:#f43f8e;--orange:#ff6b35;--green:#00c896;--text:#1a0533;--muted:#7c6b8a}
+body{background:#0a0a0f;font-family:'Instrument Sans',sans-serif;color:#fff;min-height:100vh;overflow-x:hidden}
+.bg-orbs{position:fixed;inset:0;pointer-events:none;z-index:0}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);animation:float 8s ease-in-out infinite}
+.orb1{width:500px;height:500px;background:rgba(124,58,237,0.2);top:-100px;right:-100px;animation-delay:0s}
+.orb2{width:400px;height:400px;background:rgba(244,63,142,0.15);bottom:-100px;left:-100px;animation-delay:3s}
+.orb3{width:300px;height:300px;background:rgba(255,107,53,0.1);top:50%;left:50%;transform:translate(-50%,-50%);animation-delay:6s}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-30px)}}
+nav{position:relative;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:20px 48px;border-bottom:1px solid rgba(255,255,255,0.06)}
+.logo{font-family:'Cabinet Grotesk',sans-serif;font-weight:900;font-size:24px;letter-spacing:-0.5px}
+.logo span{color:var(--pink)}
+.nav-right{display:flex;align-items:center;gap:16px}
+.nav-link{color:rgba(255,255,255,0.5);font-size:14px;text-decoration:none;transition:color 0.2s}
+.nav-link:hover{color:#fff}
+.nav-btn{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);color:#fff;padding:8px 18px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;transition:all 0.2s}
+.nav-btn:hover{background:rgba(255,255,255,0.15)}
+.hero{position:relative;z-index:1;text-align:center;padding:80px 24px 60px;max-width:800px;margin:0 auto}
+.badge{display:inline-flex;align-items:center;gap:8px;background:rgba(124,58,237,0.15);border:1px solid rgba(124,58,237,0.3);padding:8px 18px;border-radius:100px;font-size:13px;color:rgba(255,255,255,0.8);margin-bottom:32px}
+.badge-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.8)}}
+h1{font-family:'Cabinet Grotesk',sans-serif;font-size:clamp(42px,7vw,76px);font-weight:900;line-height:1.05;letter-spacing:-2px;margin-bottom:24px}
+h1 .grad{background:linear-gradient(135deg,var(--purple),var(--pink),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.subtitle{color:rgba(255,255,255,0.6);font-size:18px;line-height:1.6;max-width:520px;margin:0 auto 48px}
+.form-wrap{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:32px;max-width:500px;margin:0 auto 48px}
+.form-label{font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:12px;display:block;text-align:left}
+.input-row{display:flex;gap:10px;margin-bottom:14px}
+.email-input{flex:1;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:14px 18px;color:#fff;font-family:'Instrument Sans',sans-serif;font-size:15px;outline:none;transition:all 0.2s}
+.email-input:focus{border-color:var(--purple);background:rgba(124,58,237,0.08)}
+.email-input::placeholder{color:rgba(255,255,255,0.3)}
+.submit-btn{background:linear-gradient(135deg,var(--purple),var(--pink));border:none;padding:14px 24px;border-radius:12px;color:#fff;font-family:'Cabinet Grotesk',sans-serif;font-weight:800;font-size:15px;cursor:pointer;white-space:nowrap;transition:all 0.2s}
+.submit-btn:hover{transform:scale(1.03);box-shadow:0 8px 24px rgba(124,58,237,0.4)}
+.form-note{font-size:12px;color:rgba(255,255,255,0.3);text-align:center}
+.form-note strong{color:rgba(255,255,255,0.5)}
+.success-msg{display:none;text-align:center;padding:20px}
+.success-msg .icon{font-size:48px;margin-bottom:16px}
+.success-msg h3{font-family:'Cabinet Grotesk',sans-serif;font-size:22px;font-weight:800;margin-bottom:8px}
+.success-msg p{color:rgba(255,255,255,0.5);font-size:14px}
+.social-proof{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:80px}
+.avatars{display:flex}
+.av{width:36px;height:36px;border-radius:50%;border:2px solid #0a0a0f;margin-left:-8px}
+.av:first-child{margin-left:0}
+.av1{background:linear-gradient(135deg,#7c3aed,#f43f8e)}
+.av2{background:linear-gradient(135deg,#ff6b35,#fbbf24)}
+.av3{background:linear-gradient(135deg,#00c896,#3b82f6)}
+.av4{background:linear-gradient(135deg,#f43f8e,#7c3aed)}
+.av5{background:linear-gradient(135deg,#fbbf24,#ff6b35)}
+.proof-text{font-size:14px;color:rgba(255,255,255,0.5)}
+.proof-text strong{color:#fff}
+.stars{color:#fbbf24;font-size:12px}
+.features{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 24px 80px}
+.features-title{font-family:'Cabinet Grotesk',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;color:rgba(255,255,255,0.3);text-align:center;margin-bottom:40px}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.feature{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:20px;padding:28px;transition:all 0.3s}
+.feature:hover{background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.12);transform:translateY(-4px)}
+.feature-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:16px}
+.f1 .feature-icon{background:rgba(124,58,237,0.15)}
+.f2 .feature-icon{background:rgba(244,63,142,0.15)}
+.f3 .feature-icon{background:rgba(0,200,150,0.15)}
+.f4 .feature-icon{background:rgba(255,107,53,0.15)}
+.f5 .feature-icon{background:rgba(251,191,36,0.15)}
+.f6 .feature-icon{background:rgba(59,130,246,0.15)}
+.feature h3{font-family:'Cabinet Grotesk',sans-serif;font-size:16px;font-weight:800;margin-bottom:8px}
+.feature p{font-size:13px;color:rgba(255,255,255,0.45);line-height:1.6}
+.pricing-preview{position:relative;z-index:1;text-align:center;padding:0 24px 80px;max-width:700px;margin:0 auto}
+.pricing-preview h2{font-family:'Cabinet Grotesk',sans-serif;font-size:36px;font-weight:900;letter-spacing:-1px;margin-bottom:12px}
+.pricing-preview p{color:rgba(255,255,255,0.5);font-size:15px;margin-bottom:40px}
+.plans-row{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.plan-mini{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:24px;flex:1;min-width:180px;max-width:200px;text-align:center}
+.plan-mini.featured{background:rgba(124,58,237,0.15);border-color:rgba(124,58,237,0.4)}
+.plan-mini-name{font-size:11px;letter-spacing:2px;color:rgba(255,255,255,0.4);margin-bottom:12px}
+.plan-mini-price{font-family:'Cabinet Grotesk',sans-serif;font-size:36px;font-weight:900;margin-bottom:4px}
+.plan-mini-mo{font-size:13px;color:rgba(255,255,255,0.4)}
+.plan-mini-tag{display:inline-block;background:var(--purple);color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:100px;margin-bottom:12px;letter-spacing:1px}
+.cta-bottom{position:relative;z-index:1;text-align:center;padding:0 24px 80px}
+.cta-bottom h2{font-family:'Cabinet Grotesk',sans-serif;font-size:42px;font-weight:900;letter-spacing:-1px;margin-bottom:16px}
+.cta-big-btn{display:inline-block;background:linear-gradient(135deg,var(--purple),var(--pink));padding:18px 48px;border-radius:16px;font-family:'Cabinet Grotesk',sans-serif;font-weight:800;font-size:18px;color:#fff;cursor:pointer;border:none;transition:all 0.2s;text-decoration:none}
+.cta-big-btn:hover{transform:scale(1.04);box-shadow:0 12px 32px rgba(124,58,237,0.4)}
+footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px 48px;display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1}
+footer .logo{font-size:18px}
+.footer-links{display:flex;gap:24px}
+.footer-links a{color:rgba(255,255,255,0.3);font-size:13px;text-decoration:none;transition:color 0.2s}
+.footer-links a:hover{color:#fff}
+@media(max-width:640px){nav{padding:16px 24px}.features-grid{grid-template-columns:1fr}.input-row{flex-direction:column}footer{flex-direction:column;gap:16px;text-align:center}}
+</style>
 </head>
 <body>
-  <div class="nav"><span class="logo">Post<span>Flow</span></span></div>
-  <div class="container">
-    <h1>Get started with PostFlow</h1>
-    <p>AI-powered social media scheduling. Pick a plan to begin.</p>
-    <input type="email" id="email" placeholder="Your email address">
-    <div class="plans">
-      <div class="plan" onclick="pick('free',this)">
-        <div class="plan-name">Free</div>
-        <div class="plan-price">$0<span>/mo</span></div>
-      </div>
-      <div class="plan active" id="pro-plan" onclick="pick('pro',this)">
-        <div class="plan-name">Pro</div>
-        <div class="plan-price">$19<span>/mo</span></div>
-      </div>
-      <div class="plan" onclick="pick('agency',this)">
-        <div class="plan-name">Agency</div>
-        <div class="plan-price">$49<span>/mo</span></div>
-      </div>
-    </div>
-    <button class="btn" onclick="checkout()">Get started</button>
+<div class="bg-orbs">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+</div>
+<nav>
+  <div class="logo">Post<span>Flow</span></div>
+  <div class="nav-right">
+    <a class="nav-link" href="/pricing.html">Pricing</a>
+    <a class="nav-btn" href="/login.html">Sign In</a>
   </div>
-  <script>
-    const PRICES = {
-      pro: 'REPLACE_PRO_PRICE_ID',
-      agency: 'REPLACE_AGENCY_PRICE_ID'
-    };
-    let selected = 'pro';
-    function pick(plan, el) {
-      selected = plan;
-      document.querySelectorAll('.plan').forEach(p => p.classList.remove('active'));
-      el.classList.add('active');
-    }
-    async function checkout() {
-      const email = document.getElementById('email').value;
-      if (!email) { alert('Please enter your email'); return; }
-      if (selected === 'free') { alert('Free plan activated!'); return; }
-      const res = await fetch('/api/create-checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ priceId: PRICES[selected], email })
-      });
-      const { url } = await res.json();
-      window.location.href = url;
-    }
-  </script>
+</nav>
+<section class="hero">
+  <div class="badge"><div class="badge-dot"></div>Now accepting early access signups</div>
+  <h1>Stop Writing<br/>Social Posts.<br/><span class="grad">Let AI Do It.</span></h1>
+  <p class="subtitle">PostFlow writes, schedules & publishes your social media content automatically — across all platforms at once. Save 10+ hours every week.</p>
+  <div class="form-wrap">
+    <div id="form-content">
+      <label class="form-label">Enter your email to get early access + 30% off 🎉</label>
+      <div class="input-row">
+        <input class="email-input" type="email" id="emailInput" placeholder="you@business.com"/>
+        <button class="submit-btn" onclick="submitEmail()">Get Access →</button>
+      </div>
+      <div class="form-note">🔒 No spam. Unsubscribe anytime. <strong>Join 847 others</strong> on the waitlist.</div>
+    </div>
+    <div class="success-msg" id="successMsg">
+      <div class="icon">🎉</div>
+      <h3>You're on the list!</h3>
+      <p>We'll send your early access + 30% discount to your email shortly. Check your inbox!</p>
+    </div>
+  </div>
+  <div class="social-proof">
+    <div class="avatars">
+      <div class="av av1"></div><div class="av av2"></div><div class="av av3"></div><div class="av av4"></div><div class="av av5"></div>
+    </div>
+    <div class="proof-text">
+      <div class="stars">★★★★★</div>
+      <strong>847 people</strong> already on the waitlist
+    </div>
+  </div>
+</section>
+<section class="features">
+  <div class="features-title">EVERYTHING YOU NEED</div>
+  <div class="features-grid">
+    <div class="feature f1"><div class="feature-icon">🤖</div><h3>AI Content Writer</h3><p>Describe what you want and AI writes perfect posts for every platform in seconds.</p></div>
+    <div class="feature f2"><div class="feature-icon">📅</div><h3>Smart Scheduling</h3><p>Schedule weeks of content in minutes. Posts go live automatically at the best times.</p></div>
+    <div class="feature f3"><div class="feature-icon">📊</div><h3>Analytics Dashboard</h3><p>See exactly what's working. Track reach, engagement and growth across all platforms.</p></div>
+    <div class="feature f4"><div class="feature-icon">🔗</div><h3>5 Platforms at Once</h3><p>Post to Instagram, Facebook, Twitter, LinkedIn & TikTok with one click.</p></div>
+    <div class="feature f5"><div class="feature-icon">👥</div><h3>Team & Clients</h3><p>Manage multiple accounts and clients from one dashboard. Perfect for agencies.</p></div>
+    <div class="feature f6"><div class="feature-icon">💰</div><h3>Save 70% vs Hootsuite</h3><p>Get all the features of expensive tools at a fraction of the price. Starting at $29/mo.</p></div>
+  </div>
+</section>
+<section class="pricing-preview">
+  <h2>Simple, Honest Pricing</h2>
+  <p>No hidden fees. Cancel anytime. 30-day money-back guarantee.</p>
+  <div class="plans-row">
+    <div class="plan-mini"><div class="plan-mini-name">FREE</div><div class="plan-mini-price">$0</div><div class="plan-mini-mo">forever</div></div>
+    <div class="plan-mini featured"><div class="plan-mini-tag">MOST POPULAR</div><div class="plan-mini-name">PRO</div><div class="plan-mini-price">$29</div><div class="plan-mini-mo">per month</div></div>
+    <div class="plan-mini"><div class="plan-mini-name">AGENCY</div><div class="plan-mini-price">$79</div><div class="plan-mini-mo">per month</div></div>
+  </div>
+</section>
+<section class="cta-bottom">
+  <h2>Ready to save<br/>10 hours a week?</h2><br/>
+  <a class="cta-big-btn" href="/pricing.html">Start Free Today →</a>
+  <br/><br/>
+  <div style="color:rgba(255,255,255,0.3);font-size:13px">No credit card required · Cancel anytime</div>
+</section>
+<footer>
+  <div class="logo">Post<span>Flow</span></div>
+  <div class="footer-links">
+    <a href="/pricing.html">Pricing</a>
+    <a href="/login.html">Login</a>
+    <a href="/signup.html">Sign Up</a>
+  </div>
+  <div style="color:rgba(255,255,255,0.3);font-size:12px">© 2025 PostFlow</div>
+</footer>
+<script>
+function submitEmail(){
+  const email=document.getElementById('emailInput').value.trim();
+  if(!email||!email.includes('@')){
+    document.getElementById('emailInput').style.borderColor='#f43f8e';
+    document.getElementById('emailInput').placeholder='Please enter a valid email!';
+    return;
+  }
+  const emails=JSON.parse(localStorage.getItem('pf_leads')||'[]');
+  emails.push({email,date:new Date().toISOString()});
+  localStorage.setItem('pf_leads',JSON.stringify(emails));
+  document.getElementById('form-content').style.display='none';
+  document.getElementById('successMsg').style.display='block';
+  setTimeout(()=>{window.location.href='/pricing.html';},3000);
+}
+document.getElementById('emailInput').addEventListener('keypress',function(e){if(e.key==='Enter')submitEmail()});
+</script>
 </body>
 </html>
